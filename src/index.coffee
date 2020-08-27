@@ -30,39 +30,15 @@ program
 
 
 
-command = "ezh\r\n"
+command = "ezh"
 
 
 if program.args.length > 0
-  command = "#{program.args.join(" ")}\r\n"
+  command = "#{program.args.join(" ")}"
 
 
-console.log "Command to execute: #{command}"
+# console.log "Command to execute: #{command}"
 
-execute = (path)->
-  console.log "execute #{path}, #{command}"
-  port = new SerialPort path,
-    baudRate: 57600
-    stopBits: 1
-    dataBits: 8
-    parity: 'none'
-    autoOpen: false
-
-  parser = port.pipe(new InterByteTimeout(interval: 30))
-
-
-  response = (data) ->
-    console.log "response"
-    console.log data.toString()
-    console.log 'done'
-    port.close()
-    return
-
-  parser.on 'data', response
-  # console.log parser
-  console.log "port.write #{command}"
-  console.log port
-  port.write "ezh\r\n"#"#{command}"
 
 
 SerialPort.list().then (ports) ->
@@ -72,8 +48,26 @@ SerialPort.list().then (ports) ->
 
   if ezcooSwitch?
     console.log "EZcoo switch found at #{ezcooSwitch.path}"
-    execute ezcooSwitch.path
+    port = new SerialPort ezcooSwitch.path,
+      baudRate: 57600
+      stopBits: 1
+      dataBits: 8
+      parity: 'none'
 
+    parser = (new InterByteTimeout({interval: 100}))
+
+    port.pipe parser
+
+    response = (data) ->
+      console.log data.toString()
+      port.close()
+      return
+
+    parser.on 'data', response
+    # console.log parser
+    #console.log "port.write #{command}"
+
+    port.write "#{command}\r\n"
     # console.log port
   else
     console.error "switch not found"

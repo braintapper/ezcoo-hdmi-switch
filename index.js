@@ -1,13 +1,15 @@
-var InterByteTimeout, Readline, Ready, SerialPort, listPorts, parser, port, response;
+var InterByteTimeout, SerialPort, Sugar, command, program;
+
+Sugar = require('sugar-and-spice');
+
+Sugar.extend();
+
+program = require('commander');
 
 SerialPort = require('serialport');
 
-Readline = require('@serialport/parser-readline');
+InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 
-Ready = require('@serialport/parser-ready');
-
-//const port = new SerialPort(path, { baudRate: 57600 });
-// COM4    USB\VID_1A86&PID_7523\5&DC4A972&0&2     wch.cn
 /*
 {
   path: 'COM4',
@@ -19,41 +21,47 @@ Ready = require('@serialport/parser-ready');
   productId: '7523'
 }
 */
-listPorts = function() {
-  SerialPort.list().then((function(ports) {
-    ports.forEach(function(port) {
-      console.log(port);
-    });
-  //console.log(`${port.path}\t${port.pnpId || ''}\t${port.manufacturer || ''}`)
-  }), function(err) {
-    console.error('Error listing ports', err);
+program.version("Ezcoo HDMI Switch Control 1.0").option('-c, --call <command>', 'Serial command to issue.').parse(process.argv);
+
+command = "ezh";
+
+if (program.args.length > 0) {
+  command = `${program.args.join(" ")}`;
+}
+
+// console.log "Command to execute: #{command}"
+SerialPort.list().then(function(ports) {
+  var ezcooSwitch, parser, port, response;
+  //console.log "ports"
+  // console.log ports
+  ezcooSwitch = ports.find({
+    vendorId: "1A86",
+    productId: "7523"
   });
-};
-
-listPorts();
-
-port = new SerialPort('COM4', {
-  baudRate: 57600,
-  stopBits: 1,
-  dataBits: 8,
-  parity: 'none',
-  autoOpen: false
+  if (ezcooSwitch != null) {
+    console.log(`EZcoo switch found at ${ezcooSwitch.path}`);
+    port = new SerialPort(ezcooSwitch.path, {
+      baudRate: 57600,
+      stopBits: 1,
+      dataBits: 8,
+      parity: 'none'
+    });
+    parser = new InterByteTimeout({
+      interval: 100
+    });
+    port.pipe(parser);
+    response = function(data) {
+      console.log(data.toString());
+      port.close();
+    };
+    parser.on('data', response);
+    // console.log parser
+    //console.log "port.write #{command}"
+    port.write(`${command}\r\n`);
+  } else {
+    // console.log port
+    console.error("switch not found");
+  }
+}, function(err) {
+  console.error('Error listing ports', err);
 });
-
-//const parser = port.pipe(new Ready({ delimiter: 'READY' })); //new Readline();
-InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
-
-parser = port.pipe(new InterByteTimeout({
-  interval: 100
-}));
-
-// port.pipe(parser);
-response = function(data) {
-  console.log(data.toString());
-  console.log('done');
-  port.close();
-};
-
-parser.on('data', response);
-
-// port.open(function () { console.log("port opened"); port.write('ezh\r\n');});

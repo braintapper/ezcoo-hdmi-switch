@@ -3,7 +3,7 @@ coffee = require("gulp-coffee")
 
 
 # set the compilation order of the client
-sourcePaths = ["src/index.coffee"]
+sourcePaths = ["src/*.coffee"]
 
 
 
