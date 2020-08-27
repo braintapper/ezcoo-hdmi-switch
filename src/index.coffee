@@ -1,8 +1,14 @@
+Sugar = require('sugar-and-spice')
+
+
+Sugar.extend()
+
+
+program = require('commander')
+
 SerialPort = require('serialport')
-Readline = require('@serialport/parser-readline')
-Ready = require('@serialport/parser-ready')
-#const port = new SerialPort(path, { baudRate: 57600 });
-# COM4    USB\VID_1A86&PID_7523\5&DC4A972&0&2     wch.cn
+InterByteTimeout = require('@serialport/parser-inter-byte-timeout')
+
 
 ###
 {
@@ -16,36 +22,65 @@ Ready = require('@serialport/parser-ready')
 }
 ###
 
-listPorts = ->
-  SerialPort.list().then ((ports) ->
-    ports.forEach (port) ->
-      console.log port
-      #console.log(`${port.path}\t${port.pnpId || ''}\t${port.manufacturer || ''}`)
-      return
+program
+  .version("Ezcoo HDMI Switch Control 1.0")
+  .option('-c, --call <command>', 'Serial command to issue.')
+
+  .parse(process.argv)
+
+
+
+command = "ezh\r\n"
+
+
+if program.args.length > 0
+  command = "#{program.args.join(" ")}\r\n"
+
+
+console.log "Command to execute: #{command}"
+
+execute = (path)->
+  console.log "execute #{path}, #{command}"
+  port = new SerialPort path,
+    baudRate: 57600
+    stopBits: 1
+    dataBits: 8
+    parity: 'none'
+    autoOpen: false
+
+  parser = port.pipe(new InterByteTimeout(interval: 30))
+
+
+  response = (data) ->
+    console.log "response"
+    console.log data.toString()
+    console.log 'done'
+    port.close()
     return
-  ), (err) ->
-    console.error 'Error listing ports', err
-    return
+
+  parser.on 'data', response
+  # console.log parser
+  console.log "port.write #{command}"
+  console.log port
+  port.write "ezh\r\n"#"#{command}"
+
+
+SerialPort.list().then (ports) ->
+  #console.log "ports"
+  # console.log ports
+  ezcooSwitch = ports.find { vendorId: "1A86", productId: "7523" }
+
+  if ezcooSwitch?
+    console.log "EZcoo switch found at #{ezcooSwitch.path}"
+    execute ezcooSwitch.path
+
+    # console.log port
+  else
+    console.error "switch not found"
+
+
   return
 
-
-listPorts()
-port = new SerialPort('COM4',
-  baudRate: 57600
-  stopBits: 1
-  dataBits: 8
-  parity: 'none'
-  autoOpen: false)
-#const parser = port.pipe(new Ready({ delimiter: 'READY' })); //new Readline();
-InterByteTimeout = require('@serialport/parser-inter-byte-timeout')
-parser = port.pipe(new InterByteTimeout(interval: 100))
-# port.pipe(parser);
-
-response = (data) ->
-  console.log data.toString()
-  console.log 'done'
-  port.close()
+, (err) ->
+  console.error 'Error listing ports', err
   return
-
-parser.on 'data', response
-# port.open(function () { console.log("port opened"); port.write('ezh\r\n');});
