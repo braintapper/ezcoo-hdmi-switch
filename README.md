@@ -4,6 +4,9 @@ Script to control an Ezcoo HDMI Matrix 4x2 switch (https://www.easycoolav.com/pr
 
 Has only been tested on this model switch, because that's what I have. It may or may not work with other switches depending on the serial port commands.
 
+Tested on Windows only.
+
+
 
 ## Prerequisites
 
@@ -17,6 +20,18 @@ Install the dependencies.
 ```
 npm install
 ```
+
+
+## How it works
+
+It looks for the first port that has:
+
+VendorID: 1A86
+ProductID: 7523
+
+And uses the path to establish a connection to the HDMI switch.
+
+The script only executes one command at a time.
 
 
 ## To Run
