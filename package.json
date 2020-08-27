@@ -1,0 +1,21 @@
+{
+  "name": "ezcoo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@serialport/parser-inter-byte-timeout": "^9.0.1",
+    "serialport": "^9.0.1",
+    "sugar-and-spice": "0.0.5"
+  },
+  "devDependencies": {
+    "coffeescript": "^2.5.1",
+    "gulp": "^4.0.2",
+    "gulp-coffee": "^3.0.3"
+  }
+}
