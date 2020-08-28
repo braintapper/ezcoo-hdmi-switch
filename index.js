@@ -51,6 +51,7 @@ SerialPort.list().then(function(ports) {
       dataBits: 8,
       parity: 'none'
     });
+    // terminate after 100ms of inactivity
     parser = new InterByteTimeout({
       interval: 100
     });
