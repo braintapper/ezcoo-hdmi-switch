@@ -28,6 +28,7 @@ Example of a found HDMI Switch
 // For now, just wanted to get it to work.
 program.version("Ezcoo HDMI Switch Control 1.0").parse(process.argv);
 
+// Default command prints out the command help from the switch
 command = "ezh";
 
 if (program.args.length > 0) {

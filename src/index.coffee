@@ -32,6 +32,7 @@ program
   .version("Ezcoo HDMI Switch Control 1.0")
   .parse(process.argv)
 
+# Default command prints out the command help from the switch
 command = "ezh"
 
 
