@@ -4,6 +4,8 @@ Script to control an Ezcoo HDMI Matrix 4x2 switch (https://www.easycoolav.com/pr
 
 Has only been tested on this model switch, because that's what I have. It may or may not work with other switches depending on the serial port commands.
 
+You should be able to trigger this script from Autohotkey, an El Gato Streamdeck, etc.
+
 Tested on Windows only.
 
 
