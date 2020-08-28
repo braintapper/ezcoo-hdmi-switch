@@ -15,7 +15,7 @@ Tested on Windows only.
 
 ## To Install
 
-Install the dependencies.
+After pulling the repo, install the dependencies.
 
 ```
 npm install
