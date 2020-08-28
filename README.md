@@ -26,8 +26,9 @@ npm install
 
 It looks for the first port that has:
 
-VendorID: 1A86
-ProductID: 7523
+VendorID: `1A86`
+
+ProductID: `7523`
 
 And uses the path to establish a connection to the HDMI switch.
 
