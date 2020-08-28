@@ -31,7 +31,9 @@ ProductID: 7523
 
 And uses the path to establish a connection to the HDMI switch.
 
-The script only executes one command at a time.
+The script executes one command and then exits.
+
+If you leave the parameters blank, it will run `ezh`, which is the Ezcoo switch's help command.
 
 
 ## To Run
