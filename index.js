@@ -11,11 +11,14 @@ SerialPort = require('serialport');
 InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 
 /*
+
+Example of a found HDMI Switch
+
 {
   path: 'COM4',
   manufacturer: 'wch.cn',
   serialNumber: '',
-  pnpId: 'USB\\VID_1A86&PID_7523\\5&DC4A972&0&2',
+  pnpId: 'USB\\VID_1A86&PID_7523\\{serialnum}',
   locationId: 'Port_#0002.Hub_#0003',
   vendorId: '1A86',
   productId: '7523'
@@ -29,11 +32,8 @@ if (program.args.length > 0) {
   command = `${program.args.join(" ")}`;
 }
 
-// console.log "Command to execute: #{command}"
 SerialPort.list().then(function(ports) {
   var ezcooSwitch, parser, port, response;
-  //console.log "ports"
-  // console.log ports
   ezcooSwitch = ports.find({
     vendorId: "1A86",
     productId: "7523"
@@ -55,11 +55,8 @@ SerialPort.list().then(function(ports) {
       port.close();
     };
     parser.on('data', response);
-    // console.log parser
-    //console.log "port.write #{command}"
     port.write(`${command}\r\n`);
   } else {
-    // console.log port
     console.error("switch not found");
   }
 }, function(err) {
