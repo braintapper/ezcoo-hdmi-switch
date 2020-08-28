@@ -25,13 +25,12 @@ Example of a found HDMI Switch
 }
 ###
 
+# May add future functionality here in the form of command line switches
+# For now, just wanted to get it to work.
+
 program
   .version("Ezcoo HDMI Switch Control 1.0")
-  .option('-c, --call <command>', 'Serial command to issue.')
-
   .parse(process.argv)
-
-
 
 command = "ezh"
 
@@ -39,10 +38,11 @@ command = "ezh"
 if program.args.length > 0
   command = "#{program.args.join(" ")}"
 
-
-
 SerialPort.list().then (ports) ->
 
+  # Find the >first< plugged in Ezcoo switch
+  # If you have multiples, only the first will be found
+  # You can modify this script to include the serial number to get a higher degree of granularity
   ezcooSwitch = ports.find { vendorId: "1A86", productId: "7523" }
 
   if ezcooSwitch?
@@ -67,7 +67,7 @@ SerialPort.list().then (ports) ->
 
     port.write "#{command}\r\n"
   else
-    console.error "switch not found"
+    console.error "Ezcoo HDMI switch with product id 7523 not found"
 
 
   return
