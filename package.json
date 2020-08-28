@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@serialport/parser-inter-byte-timeout": "^9.0.1",
     "commander": "^6.0.0",
