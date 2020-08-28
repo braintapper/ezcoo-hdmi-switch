@@ -36,6 +36,8 @@ The script only executes one command at a time.
 
 ## To Run
 
+From the path of this local repo:
+
 ```
 # Set output x to Input y
 node index ezs out0 vs in2
