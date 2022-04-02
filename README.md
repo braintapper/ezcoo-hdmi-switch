@@ -4,6 +4,8 @@ Script to control an Ezcoo HDMI Matrix 4x2 switch (https://www.easycoolav.com/pr
 
 Has only been tested on this model switch, because that's what I have. It may or may not work with other switches depending on the serial port commands.
 
+This updated version (2022-04-02) supports multiple switches connected to the same computer.
+
 You should be able to trigger this script from Autohotkey, an El Gato Streamdeck, etc.
 
 Tested on Windows only.
@@ -44,7 +46,6 @@ Parameters:
 --i [int] - required, input #, range of 1 - your device maximum
 --o [int] - required, output #, range of 1 - your device maximum
 --s "[string]" - required - serial number of your string. Enclose in quotes for best results.
-
 ```
 
 ## To Run
