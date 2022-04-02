@@ -30,27 +30,38 @@ It looks for the first port that has:
 
 VendorID: `1A86`
 
-ProductID: `7523`
+Plus the serial number matching your device.
 
 And uses the path to establish a connection to the HDMI switch.
 
 The script executes one command and then exits.
 
-If you leave the parameters blank, it will run `ezh`, which is the Ezcoo switch's help command.
+If you leave the parameters blank, it will list all the Ezcoo devices connected to your computer.
 
+Parameters:
+
+```
+--i [int] - required, input #, range of 1 - your device maximum
+--o [int] - required, output #, range of 1 - your device maximum
+--s "[string]" - required - serial number of your string. Enclose in quotes for best results.
+
+```
 
 ## To Run
 
 From the path of this local repo:
 
 ```
-# Set output x to Input y
-node index ezs out0 vs in2
+# To list available Ezcoo devices with their serial numbers and port locations
+node index.mjs
+
+# To set output 1 to input 2 on switch with serial number ABC123
+# The serial number may have characters that can't be processed unless enclosed in double quotes, so always use double quotes
+
+node index.mjs -i 2 -o 1 -s "ABC123"
+
 ```
-
-
 ### Commands
-
 ```
 ===============================================================================================================================
 =********************************************************Systems HELP*********************************************************=
@@ -59,7 +70,6 @@ node index ezs out0 vs in2
 =   Azz                           :  All Commands start by Prefix System Address zz, if [01-99]                               =
 =-----------------------------------------------------------------------------------------------------------------------------=
 =   EZH                           : Help                                                                                      =
-
 =   EZSTA                         : Show Global System Status                                                                 =
 =   EZS RST                       : Reset to Factory Defaults                                                                 =
 =   EZS ADDR xx                   : Set System Address to xx {xx=[00~99](00=Single)}                                          =

@@ -9,9 +9,12 @@ task = require("gulp").task
 
 
 javascriptsTask = require("./javascripts.coffee")
+mjsTask = require("./mjs.coffee")
 
 task "javascripts", javascriptsTask
 
 
 task "bot", (cb)->
   watch javascriptsTask.watch, javascriptsTask
+  watch mjsTask.watch, mjsTask
+

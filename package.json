@@ -9,9 +9,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@serialport/parser-inter-byte-timeout": "^9.0.1",
+    "chalk": "^5.0.1",
     "commander": "^6.0.0",
-    "serialport": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "serialport": "^10.4.0",
     "sugar-and-spice": "0.0.5"
   },
   "devDependencies": {
